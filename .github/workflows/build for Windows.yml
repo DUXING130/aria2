@@ -29,12 +29,6 @@ jobs:
                                libtool pkg-config git make gzip bzip2 \
                                autopoint
 
-    # 3. 修改源码以突破 16 线程限制（解除官方封印）
-    - name: Modify connection limit
-      run: |
-        echo "Modifying Max Connection Limit to 128..."
-        sed -i 's/"16"/"128"/g' src/OptionHandlerFactory.cc
-
     # 4. 生成配置脚本并运行 ./configure
     # 使用 --with-wintls 代替 OpenSSL，免去编译复杂第三方库的麻烦，且能极大减小体积
     - name: Configure for Windows x64
