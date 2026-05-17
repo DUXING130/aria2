@@ -31,25 +31,10 @@ jobs:
                                
     - name: Setup Vcpkg & Build Dependencies
       run: |
-        # 克隆 vcpkg
         git clone https://github.com/microsoft/vcpkg.git
         cd vcpkg
         ./bootstrap-vcpkg.sh
-        
-        # 核心：使用 vcpkg 一键编译出 windows x64 架构下所需的所有静态库
-        # 这里的 triplet 选用 x64-windows-static-md 或自定义 mingw，
-        # 为了兼容性，我们直接让 vcpkg 用 mingw 编译，或者直接利用 vcpkg 导出的头文件。
-        # 针对 MinGW 交叉编译，最直观的方式是让 vcpkg 编译出静态二进制文件：
         ./vcpkg install zlib c-ares libssh2 sqlite3 expat --triplet=x64-mingw-static
-        
-        # 将编译好的头文件和库路径导出或软链接到 MinGW 寻找的目录中
-        sudo cp -r packages/*_x64-mingw-static/include/* /usr/x86_64-w64-mingw32/include/
-        sudo cp packages/*_x64-mingw-static/lib/*.lib /usr/x86_64-w64-mingw32/lib/
-        
-        # 兼容性修复：MinGW 链接器识别 .a 格式，Windows 静态库通常是 .lib，直接改名拷贝即可
-        cd /usr/x86_64-w64-mingw32/lib/
-        for f in *.lib; do sudo cp "$f" "lib${f%.lib}.a"; done
-        cd -
         cd ..
         
     # 3. 生成配置脚本并运行 ./configure
