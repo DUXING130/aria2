@@ -1,33 +1,21 @@
 name: Cross-Compile Aria2 for Windows
 
-on:
-  push:
-    branches:
-      - main
-      - master
-  pull_request:
-    branches:
-      - main
-      - master
-  workflow_dispatch: # 支持手动点击按钮触发编译
+on: [push,pull_request,workflow_dispatch]
 
 jobs:
-  build-windows:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. 检出仓库源码
     - name: Checkout source code
       uses: actions/checkout@v6
-
-    # 2. 安装 Linux 宿主机上的交叉编译依赖
+      
     - name: Install dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y mingw-w64 g++-mingw-w64 gcc-mingw-w64 \
-                               binutils-mingw-w64 autoconf automake \
-                               libtool pkg-config git make gzip bzip2 \
-                               autopoint
+                               binutils-mingw-w64 autoconf automake autopoint\
+                               libtool pkg-config git make gzip bzip2 
                                
     - name: Setup Vcpkg & Build Dependencies
       run: |
@@ -36,9 +24,7 @@ jobs:
         ./bootstrap-vcpkg.sh
         ./vcpkg install zlib c-ares libssh2 sqlite3 expat --triplet=x64-mingw-static
         cd ..
-        
-    # 3. 生成配置脚本并运行 ./configure
-    # 使用 --with-wintls 代替 OpenSSL，免去编译复杂第三方库的麻烦，且能极大减小体积
+      
     - name: Configure for Windows x64
       run: |
         autoreconf -i
@@ -55,7 +41,6 @@ jobs:
           --without-libxml2 \
           --with-libexpat \
 
-    # 4. 编译
     - name: Compile Aria2
       run: |
         make -j$(nproc)
@@ -64,13 +49,7 @@ jobs:
     # 5. 使用 strip 移除调试符号，进行极限瘦身
     - name: Optimize and Strip Binary
       run: |
-        echo "Original size:"
-        ls -lh build-win64/bin/aria2c.exe
-        
         x86_64-w64-mingw32-strip build-win64/bin/aria2c.exe
-        
-        echo "Stripped size:"
-        ls -lh build-win64/bin/aria2c.exe
 
     # 6. 将编译出的 exe 文件上传到 GitHub Actions Artifacts 中
     - name: Upload Artifact
