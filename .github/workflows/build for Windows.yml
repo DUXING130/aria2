@@ -40,7 +40,7 @@ jobs:
         # 这里的 triplet 选用 x64-windows-static-md 或自定义 mingw，
         # 为了兼容性，我们直接让 vcpkg 用 mingw 编译，或者直接利用 vcpkg 导出的头文件。
         # 针对 MinGW 交叉编译，最直观的方式是让 vcpkg 编译出静态二进制文件：
-        ./vcpkg install zlib c-ares libssh2 sqlite3 expat --triplet=x64-windows-static
+        ./vcpkg install zlib c-ares libssh2 sqlite3 expat --triplet=x64-mingw-static
         
         # 将编译好的头文件和库路径导出或软链接到 MinGW 寻找的目录中
         sudo cp -r packages/*_x64-windows-static/include/* /usr/x86_64-w64-mingw32/include/
