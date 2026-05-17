@@ -52,7 +52,7 @@ jobs:
           ARIA2_STATIC=yes \
           --with-wintls \
           --without-libxml2 \
-          --with-libexpat
+          --with-libexpat \
           LIBS="-lsqlite3"
 
     # 5. 编译
