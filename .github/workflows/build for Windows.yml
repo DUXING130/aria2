@@ -27,7 +27,8 @@ jobs:
         sudo apt-get install -y mingw-w64 g++-mingw-w64 gcc-mingw-w64 \
                                binutils-mingw-w64 autoconf automake \
                                libtool pkg-config git make gzip bzip2 \
-                               autopoint libsqlite3-dev
+                               autopoint libsqlite3-dev libssh2-dev \
+                               libcares-dev
     # 3.构建其他组件
     - name: Build others for Windows x64
       run: |
