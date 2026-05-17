@@ -15,14 +15,14 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y mingw-w64 g++-mingw-w64 gcc-mingw-w64 \
                                binutils-mingw-w64 autoconf automake autopoint\
-                               libtool pkg-config git make gzip bzip2 libgmp-dev
+                               libtool pkg-config git make gzip bzip2
                                
     - name: Setup Vcpkg & Build Dependencies
       run: |
         git clone https://github.com/microsoft/vcpkg.git
         cd vcpkg
         ./bootstrap-vcpkg.sh
-        ./vcpkg install zlib c-ares libssh2 sqlite3 expat --triplet=x64-mingw-static
+        ./vcpkg install zlib c-ares libssh2 sqlite3 expat gmp --triplet=x64-mingw-static
         cd ..
       
     - name: Configure for Windows x64
