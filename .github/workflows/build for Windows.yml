@@ -57,6 +57,7 @@ jobs:
           --with-wintls \
           --without-libxml2 \
           --with-libexpat
+          LIBS="-lsqlite3"
 
     # 4. 编译
     - name: Compile Aria2
