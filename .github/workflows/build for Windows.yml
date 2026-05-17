@@ -27,8 +27,8 @@ jobs:
         sudo apt-get install -y mingw-w64 g++-mingw-w64 gcc-mingw-w64 \
                                binutils-mingw-w64 autoconf automake \
                                libtool pkg-config git make gzip bzip2 \
-                               autopoint libsqlite3-dev libssh2-mingw-w64-dev \
-                               libsqlite3-mingw-w64-dev libexpat1-mingw-w64-dev \
+                               autopoint libsqlite3-dev libssh2-1-mingw-w64-dev \
+                               libsqlite3-mod-mingw-w64-dev libexpat-mingw-w64-dev \
                                libz-mingw-w64-dev libc-ares-mingw-w64-dev
         
     # 3. 生成配置脚本并运行 ./configure
