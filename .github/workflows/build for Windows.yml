@@ -27,7 +27,7 @@ jobs:
         sudo apt-get install -y mingw-w64 g++-mingw-w64 gcc-mingw-w64 \
                                binutils-mingw-w64 autoconf automake \
                                libtool pkg-config git make gzip bzip2 \
-                               autopoint sqlite3
+                               autopoint libsqlite3-dev
 
     # 3. 生成配置脚本并运行 ./configure
     # 使用 --with-wintls 代替 OpenSSL，免去编译复杂第三方库的麻烦，且能极大减小体积
