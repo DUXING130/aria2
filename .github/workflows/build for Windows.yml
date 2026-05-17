@@ -28,7 +28,22 @@ jobs:
                                binutils-mingw-w64 autoconf automake \
                                libtool pkg-config git make gzip bzip2 \
                                autopoint libsqlite3-dev
-
+    - name: Build SQLite3 for Windows x64
+      run: |
+        # 下载 2026 年（或最新稳定版）的 SQLite 源码（这里以通用无版本号 amalgamation 为例，或指定版本）
+        wget https://www.sqlite.org/2024/sqlite-amalgamation-3460000.zip
+        unzip sqlite-amalgamation-3460000.zip
+        cd sqlite-amalgamation-3460000
+        
+        # 使用 Mingw 编译器手动将其编译为静态库 .a 文件
+        x86_64-w64-mingw32-gcc -c sqlite3.c -o sqlite3.o -O2
+        x86_64-w64-mingw32-ar rcs libsqlite3.a sqlite3.o
+        
+        # 将头文件和静态库复制到 Mingw 的系统搜索目录下
+        sudo cp sqlite3.h /usr/x86_64-w64-mingw32/include/
+        sudo cp libsqlite3.a /usr/x86_64-w64-mingw32/lib/
+        cd ..
+        
     # 3. 生成配置脚本并运行 ./configure
     # 使用 --with-wintls 代替 OpenSSL，免去编译复杂第三方库的麻烦，且能极大减小体积
     - name: Configure for Windows x64
