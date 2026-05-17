@@ -43,8 +43,8 @@ jobs:
         ./vcpkg install zlib c-ares libssh2 sqlite3 expat --triplet=x64-mingw-static
         
         # 将编译好的头文件和库路径导出或软链接到 MinGW 寻找的目录中
-        sudo cp -r packages/*_x64-windows-static/include/* /usr/x86_64-w64-mingw32/include/
-        sudo cp packages/*_x64-windows-static/lib/*.lib /usr/x86_64-w64-mingw32/lib/
+        sudo cp -r packages/*_x64-mingw-static/include/* /usr/x86_64-w64-mingw32/include/
+        sudo cp packages/*_x64-mingw-static/lib/*.lib /usr/x86_64-w64-mingw32/lib/
         
         # 兼容性修复：MinGW 链接器识别 .a 格式，Windows 静态库通常是 .lib，直接改名拷贝即可
         cd /usr/x86_64-w64-mingw32/lib/
