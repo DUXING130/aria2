@@ -28,7 +28,7 @@ jobs:
                                binutils-mingw-w64 autoconf automake \
                                libtool pkg-config git make gzip bzip2 \
                                autopoint libsqlite3-dev
-    # 3.构建sqlite3 for windows
+    # 3.构建其他组件
     - name: Build SQLite3 for Windows x64
       run: |
         wget https://www.sqlite.org/2024/sqlite-amalgamation-3460000.zip
@@ -38,6 +38,13 @@ jobs:
         x86_64-w64-mingw32-ar rcs libsqlite3.a sqlite3.o
         sudo cp sqlite3.h /usr/x86_64-w64-mingw32/include/
         sudo cp libsqlite3.a /usr/x86_64-w64-mingw32/lib/
+        cd ..
+        wget https://github.com/madler/zlib/archive/refs/tags/v1.3.1.tar.gz
+        tar -zxvf v1.3.1.tar.gz
+        cd zlib-1.3.1
+        make -f win32/Makefile.gcc PREFIX=x86_64-w64-mingw32- Log_level=3 -j$(nproc)
+        sudo cp zlib.h zconf.h /usr/x86_64-w64-mingw32/include/
+        sudo cp libz.a /usr/x86_64-w64-mingw32/lib/
         cd ..
         
     # 4. 生成配置脚本并运行 ./configure
