@@ -32,7 +32,7 @@ jobs:
         export CFLAGS="-I$PWD/vcpkg/installed/x64-mingw-static/include $CFLAGS"
         export CPPFLAGS="-I$PWD/vcpkg/installed/x64-mingw-static/include $CPPFLAGS"
         export LDFLAGS="-L$PWD/vcpkg/installed/x64-mingw-static/lib $LDFLAGS"
-        ./configure \
+        ./mingw-config \
           --host=x86_64-w64-mingw32 \
           --prefix=$PWD/build-win64 \
           --enable-static-binary \
