@@ -27,35 +27,11 @@ jobs:
         sudo apt-get install -y mingw-w64 g++-mingw-w64 gcc-mingw-w64 \
                                binutils-mingw-w64 autoconf automake \
                                libtool pkg-config git make gzip bzip2 \
-                               autopoint libsqlite3-dev libssh2-dev \
-                               libcares-dev
-    # 3.构建其他组件
-    - name: Build others for Windows x64
-      run: |
-        wget https://www.sqlite.org/2024/sqlite-amalgamation-3460000.zip
-        unzip sqlite-amalgamation-3460000.zip
-        cd sqlite-amalgamation-3460000
-        x86_64-w64-mingw32-gcc -c sqlite3.c -o sqlite3.o -O2
-        x86_64-w64-mingw32-ar rcs libsqlite3.a sqlite3.o
-        sudo cp sqlite3.h /usr/x86_64-w64-mingw32/include/
-        sudo cp libsqlite3.a /usr/x86_64-w64-mingw32/lib/
-        cd ..
-        wget https://github.com/madler/zlib/archive/refs/tags/v1.3.1.tar.gz
-        tar -zxvf v1.3.1.tar.gz
-        cd zlib-1.3.1
-        make -f win32/Makefile.gcc PREFIX=x86_64-w64-mingw32- Log_level=3 -j$(nproc)
-        sudo cp zlib.h zconf.h /usr/x86_64-w64-mingw32/include/
-        sudo cp libz.a /usr/x86_64-w64-mingw32/lib/
-        cd ..
-        wget https://github.com/libexpat/libexpat/releases/download/R_2_6_2/expat-2.6.2.tar.bz2
-        tar -jxvf expat-2.6.2.tar.bz2
-        cd expat-2.6.2
-        ./configure --host=x86_64-w64-mingw32 --enable-static --disable-shared --prefix=/usr/x86_64-w64-mingw32
-        make -j$(nproc)
-        sudo make install
-        cd ..
+                               autopoint libsqlite3-dev libssh2-mingw-w64-dev \
+                               libsqlite3-mingw-w64-dev libexpat1-mingw-w64-dev \
+                               libz-mingw-w64-dev libc-ares-mingw-w64-dev
         
-    # 4. 生成配置脚本并运行 ./configure
+    # 3. 生成配置脚本并运行 ./configure
     # 使用 --with-wintls 代替 OpenSSL，免去编译复杂第三方库的麻烦，且能极大减小体积
     - name: Configure for Windows x64
       run: |
@@ -68,15 +44,14 @@ jobs:
           --with-wintls \
           --without-libxml2 \
           --with-libexpat \
-          LIBS="-lsqlite3"
 
-    # 5. 编译
+    # 4. 编译
     - name: Compile Aria2
       run: |
         make -j$(nproc)
         make install
 
-    # 6. 使用 strip 移除调试符号，进行极限瘦身
+    # 5. 使用 strip 移除调试符号，进行极限瘦身
     - name: Optimize and Strip Binary
       run: |
         echo "Original size:"
@@ -87,7 +62,7 @@ jobs:
         echo "Stripped size:"
         ls -lh build-win64/bin/aria2c.exe
 
-    # 7. 将编译出的 exe 文件上传到 GitHub Actions Artifacts 中
+    # 6. 将编译出的 exe 文件上传到 GitHub Actions Artifacts 中
     - name: Upload Artifact
       uses: actions/upload-artifact@v6
       with:
