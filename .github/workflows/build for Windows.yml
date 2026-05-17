@@ -18,7 +18,7 @@ jobs:
     steps:
     # 1. 检出仓库源码
     - name: Checkout source code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     # 2. 安装 Linux 宿主机上的交叉编译依赖
     - name: Install dependencies
@@ -26,7 +26,8 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y mingw-w64 g++-mingw-w64 gcc-mingw-w64 \
                                binutils-mingw-w64 autoconf automake \
-                               libtool pkg-config git make gzip bzip2
+                               libtool pkg-config git make gzip bzip2 \
+                               autopoint
 
     # 3. 修改源码以突破 16 线程限制（解除官方封印）
     - name: Modify connection limit
@@ -67,7 +68,7 @@ jobs:
 
     # 7. 将编译出的 exe 文件上传到 GitHub Actions Artifacts 中
     - name: Upload Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: aria2c-win64-custom
         path: build-win64/bin/aria2c.exe
