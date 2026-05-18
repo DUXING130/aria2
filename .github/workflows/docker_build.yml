@@ -20,13 +20,13 @@ jobs:
 
     - name: Extract Binary from Docker Container
       run: |
-        docker run --rm -it -v /path/to/dest:/out aria2-mingw cp /aria2/src/aria2c.exe /out
+        docker run --rm -v "$PWD/output":/out aria2-mingw-image cp /aria2/src/aria2c.exe /out
 
     # 5. 自动发布到 GitHub Release 页面
     - name: Create Release and Upload Asset
       uses: softprops/action-gh-release@v2
       with:
-        files: ./aria2c.exe
+        files: ./output/aria2c.exe
         name: Aria2 Docker-Built Windows Release ${{ github.ref_name }}
         body: |
           ## 🚀 Docker 自动化编译完成
