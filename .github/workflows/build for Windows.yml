@@ -32,15 +32,28 @@ jobs:
         export CFLAGS="-I$PWD/vcpkg/installed/x64-mingw-static/include $CFLAGS"
         export CPPFLAGS="-I$PWD/vcpkg/installed/x64-mingw-static/include $CPPFLAGS"
         export LDFLAGS="-L$PWD/vcpkg/installed/x64-mingw-static/lib $LDFLAGS"
-        ./mingw-config \
+        ./configure \
           --host=x86_64-w64-mingw32 \
-          --prefix=$PWD/build-win64 \
-          --enable-static-binary \
-          ARIA2_STATIC=yes \
-          --with-wintls \
+          --prefix=$PREFIX \
+          --without-included-gettext \
+          --disable-nls \
+          --with-libcares \
+          --without-gnutls \
+          --without-openssl \
+          --with-sqlite3 \
           --without-libxml2 \
           --with-libexpat \
-          LIBS="-lws2_32 -lbcrypt -lcrypt32 -lmswsock"
+          --with-libz \
+          --with-libgmp \
+          --with-libssh2 \
+          --without-libgcrypt \
+          --without-libnettle \
+          --with-cppunit-prefix=$PREFIX \
+          ARIA2_STATIC=yes \
+          CPPFLAGS="-I$PREFIX/include" \
+          LDFLAGS="-L$PREFIX/lib" \
+          PKG_CONFIG="/usr/bin/pkg-config" \
+          PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
 
     - name: Compile Aria2
       run: |
