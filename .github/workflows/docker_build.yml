@@ -20,9 +20,7 @@ jobs:
 
     - name: Extract Binary from Docker Container
       run: |
-        docker create --name extractor aria2-mingw-image
-        docker cp extractor:/aria2/build-mingw/bin/aria2c.exe ./aria2c.exe
-        docker rm extractor
+        docker run --rm -it -v /path/to/dest:/out aria2-mingw cp /aria2/src/aria2c.exe /out
 
     # 5. 自动发布到 GitHub Release 页面
     - name: Create Release and Upload Asset
