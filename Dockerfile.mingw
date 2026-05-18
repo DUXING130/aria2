@@ -29,7 +29,7 @@ RUN apt-get update && \
         autopoint libcppunit-dev libxml2-dev libgcrypt20-dev lzip \
         python3-docutils
 
-RUN curl -L -O https://gmplib.org/download/gmp/gmp-6.3.0.tar.xz && \
+RUN curl -L -O https://ftp.gnu.org/gnu/gmp/gmp-6.3.0.tar.xz && \
     curl -L -O https://github.com/libexpat/libexpat/releases/download/R_2_8_1/expat-2.8.1.tar.bz2 && \
     curl -L -O https://www.sqlite.org/2026/sqlite-autoconf-3530100.tar.gz && \
     curl -L -O https://github.com/madler/zlib/releases/download/v1.3.2/zlib-1.3.2.tar.gz && \
